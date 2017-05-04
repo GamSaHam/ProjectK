@@ -1,0 +1,4 @@
+﻿id,min,gas,description,build_type
+1001,25,10,자원을 저장합니다.,22
+1002,30,10,form,11
+1003,40,20,form,11
