@@ -42,18 +42,42 @@ public class BuildingManager : MonoBehaviour {
     List<BuildingState> _number_of_buildings = new List<BuildingState>();
 
 
+	public void setUsedMap(int x,int y)
+	{
+		MapManager.getInstance().unableToBuild(x, y);
+		AstarMap.getInstance ().closeMap (y , x);
+	
+	}
+
+
     public void insertBuilding(GameObject game_object,int x,int y,ConstructionManager.BUILD_TYPE build_type)
     {
 
-        MapManager.getInstance().unableToBuild(x, y);
-        
+		setUsedMap (x,y);
+
         if (build_type == ConstructionManager.BUILD_TYPE.FOUR_BLOCK)
         {
-            MapManager.getInstance().unableToBuild(x+1, y);
-            MapManager.getInstance().unableToBuild(x, y+1);
-            MapManager.getInstance().unableToBuild(x+1, y+1);
+
+			setUsedMap (x+1,y);
+			setUsedMap (x,y+1);
+			setUsedMap (x+1,y+1);
 
         }
+
+		if (build_type == ConstructionManager.BUILD_TYPE.NINE_BLOCK)
+		{
+			setUsedMap (x+1,y);
+			setUsedMap (x,y+1);
+			setUsedMap (x+1,y+1);
+
+			setUsedMap (x+2,y);
+			setUsedMap (x+2,y+1);
+			setUsedMap (x+2,y+2);
+			setUsedMap (x,y+2);
+			setUsedMap (x+1,y+2);
+
+		}
+
 
 
         BuildingState building_state = new BuildingState(game_object, x, y, build_type);
@@ -68,8 +92,8 @@ public class BuildingManager : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        GameObject king_tower1 = GameObject.Find("KingTower1");
-        insertBuilding(king_tower1,5,5,ConstructionManager.BUILD_TYPE.FOUR_BLOCK);
+       // GameObject king_tower1 = GameObject.Find("KingTower1");
+      //  insertBuilding(king_tower1,5,5,ConstructionManager.BUILD_TYPE.FOUR_BLOCK);
 
 
 

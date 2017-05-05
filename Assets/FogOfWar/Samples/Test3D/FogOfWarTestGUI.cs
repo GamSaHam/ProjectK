@@ -121,7 +121,7 @@ namespace FoW
 
             // update camera zooming
             float zoomchange = Input.GetAxis("Mouse ScrollWheel");
-            _cameraTransform.position = new Vector3(_cameraTransform.position.x, Mathf.Clamp(_cameraTransform.position.y - zoomchange * 10, 25, 50), _cameraTransform.position.z);
+            _cameraTransform.position = new Vector3(_cameraTransform.position.x, Mathf.Clamp(_cameraTransform.position.y - zoomchange * 10, 10, 50), _cameraTransform.position.z);
         }
 
         void DrawOnMap(string text, Vector3 position, int panelwidth)

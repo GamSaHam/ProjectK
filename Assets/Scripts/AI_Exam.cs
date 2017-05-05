@@ -13,6 +13,20 @@ public class AI_Exam : MonoBehaviour {
 			astar.reSearching ();
 		
 		}
+	}
+
+	public AstarMap _astarmap;
+
+	public void mapDisable()
+	{
+
+		_astarmap._close_map_list.Add (new Point (3, 5));
+		_astarmap._close_map_list.Add (new Point (3, 4));
+		_astarmap._close_map_list.Add (new Point (3, 3));
+
+
+
 
 	}
+
 }

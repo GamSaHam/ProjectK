@@ -95,6 +95,24 @@ public class Node : MonoBehaviour
             changeMapColor(map_position, 1, 1, true);
         }
 
+		if (building_type == ConstructionManager.BUILD_TYPE.NINE_BLOCK)
+		{
+			string object_name = gameObject.name;
+
+			string[] map_position = object_name.Split('p');
+
+
+			changeMapColor(map_position, 0, 1, true);
+			changeMapColor(map_position, 1, 0, true);
+			changeMapColor(map_position, 1, 1, true);
+
+			changeMapColor(map_position, 2, 0, true);
+			changeMapColor(map_position, 2, 1, true);
+			changeMapColor(map_position, 2, 2, true);
+			changeMapColor(map_position, 0, 2, true);
+			changeMapColor(map_position, 1, 2, true);
+		}
+
         if(_is_builable)
             _material.color = Color.red;
     }
@@ -115,6 +133,25 @@ public class Node : MonoBehaviour
             changeMapColor(map_position, 1, 0, false);
             changeMapColor(map_position, 1, 1, false);
         }
+
+		if (building_type == ConstructionManager.BUILD_TYPE.NINE_BLOCK)
+		{
+			string object_name = gameObject.name;
+			string[] map_position = object_name.Split('p');
+
+			changeMapColor(map_position, 0, 1, false);
+			changeMapColor(map_position, 1, 0, false);
+			changeMapColor(map_position, 1, 1, false);
+
+			changeMapColor(map_position, 2, 0, false);
+			changeMapColor(map_position, 2, 1, false);
+			changeMapColor(map_position, 2, 2, false);
+			changeMapColor(map_position, 0, 2, false);
+			changeMapColor(map_position, 1, 2, false);
+		}
+
+
+
         if (_is_builable)
             _material.color = Color.green;
     }

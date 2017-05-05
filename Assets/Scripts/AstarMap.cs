@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
-
+using System.Collections.Generic;
 public class AstarMap : MonoBehaviour
 {
+	public const int MAX_MAP_SIZE = 100;
+	public List<Point> _close_map_list = new List<Point>();
+
     private Vector3[] _unit_position;
 	private UnitStaus[] _unit_status;
 
     public static AstarMap _instance;
+
 
 
 	public GameObject[] _unit;
@@ -16,13 +20,13 @@ public class AstarMap : MonoBehaviour
         {
 			Debug.LogError("More than one AstarMap in scene");
         }
-
-
-
+			
         _instance = this;
+
+	
+
     }
-
-
+		
 
     private void FixedUpdate()
     {
@@ -74,5 +78,16 @@ public class AstarMap : MonoBehaviour
 
         return false;
     }
+
+	public void closeMap(int x,int y)
+	{
+		_close_map_list.Add (new Point(x * 2 , y * 2 ));
+		_close_map_list.Add (new Point(x * 2 + 1, y * 2));
+		_close_map_list.Add (new Point(x * 2, y * 2+1));
+		_close_map_list.Add (new Point(x * 2+1, y * 2+1));
+
+	
+	}
+
 
 }

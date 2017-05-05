@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
+using System.Collections;
 
 public enum MAP_STATE
 {
@@ -10,6 +11,19 @@ public enum MAP_STATE
     END_POINT = 4,
     SEARCH = 5,
     BLOCK  = 6
+}
+
+public class Point
+{
+	public int _x;
+	public int _y;
+
+	public Point(int x, int y)
+	{
+		_x = x;
+		_y = y;
+	}
+
 }
 
 public class Astar : MonoBehaviour
@@ -53,6 +67,14 @@ public class Astar : MonoBehaviour
 
     private void Start()
     {
+		StartCoroutine ("waitAndSeaching");
+    }
+
+	IEnumerator  waitAndSeaching()
+	{
+
+		yield return new WaitForSeconds (5f);
+
 		_start_x = (int)Mathf.Round(transform.position.x + MAP_FIX_SIZE);
 		_start_y = (int)Mathf.Round(transform.position.z + MAP_FIX_SIZE);
 
@@ -60,26 +82,40 @@ public class Astar : MonoBehaviour
 		_end_y = (int)Mathf.Round(_transform_target.position.z + MAP_FIX_SIZE);
 
 		for (int i = 0; i < MAX_MAP_SIZE; i++)
-        {
+		{
 			for (int j = 0; j < MAX_MAP_SIZE; j++)
-            {
-                _map[i, j] = MAP_STATE.OPEN;
-            }
-        }
+			{
+				_map[i, j] = MAP_STATE.OPEN;
+			}
+		}
 
-        _map[_start_x, _start_y] = MAP_STATE.START_POINT;
-        _map[_end_x, _end_y] = MAP_STATE.END_POINT;
+		_map[_start_x, _start_y] = MAP_STATE.START_POINT;
+		_map[_end_x, _end_y] = MAP_STATE.END_POINT;
 
-       // _map[3, 3] = MAP_STATE.CLOSE;
-       // _map[3, 4] = MAP_STATE.CLOSE;
-       // _map[3, 5] = MAP_STATE.CLOSE;
 
-        _rigidbody = GetComponent<Rigidbody>();
+
+		AstarMap instance = AstarMap.getInstance ();
+
+		for (int i = 0; i < instance._close_map_list.Count; i++) {
+		
+			Point point = instance._close_map_list [i];
+
+			_map [point._x, point._y] = MAP_STATE.CLOSE;
+
+		}
+
+		print (_map[3,5]);
+
+
+		_rigidbody = GetComponent<Rigidbody>();
 
 		_unit_status = GetComponent<UnitStaus> ();
 
-        startSearching();
-    }
+		startSearching();
+
+	}
+
+
 
     void startSearching()
     {
@@ -93,18 +129,7 @@ public class Astar : MonoBehaviour
 
     List<Map> _point_map_list = new List<Map>();
 
-    class Point
-    {
-        public int _x;
-        public int _y;
 
-        public Point(int x, int y)
-        {
-            _x = x;
-            _y = y;
-        }
-
-    }
 
     List<Point> _search_map_list = new List<Point>();
 

@@ -26,12 +26,14 @@ public class ConstructionManager : MonoBehaviour
 
     public enum BUILD_TYPE
     {
-        FOUR_BLOCK = 4
+        FOUR_BLOCK = 4,
+		NINE_BLOCK = 9
+			
 
     }
 
     //public GameObject _standard_turret_prefab;
-    public BUILD_TYPE _building_type = BUILD_TYPE.FOUR_BLOCK;
+	public BUILD_TYPE _building_type = BUILD_TYPE.NINE_BLOCK;
 
 
     private void Start()
@@ -88,9 +90,9 @@ public class ConstructionManager : MonoBehaviour
                 _min = (int)data[i]["min"];
                 _gas = (int)data[i]["gas"];
 
-                if ((int)data[i]["build_type"] == 22)
+                if ((int)data[i]["build_type"] == 33)
                 {
-                    _building_type = BUILD_TYPE.FOUR_BLOCK;
+					_building_type = BUILD_TYPE.NINE_BLOCK;
                 }
 
                 if ((int)data[i]["id"] == 1001)
@@ -119,17 +121,21 @@ public class ConstructionManager : MonoBehaviour
         GameObject _target_to_build = getTargetBuilding();
         BUILD_TYPE building_type = getBuildingType();
 
-        Vector3 position = new Vector3(pos_x + 4.5f, pos_y, pos_z - 4.5f);
+        Vector3 position = new Vector3(pos_x , pos_y, pos_z);
 
-        if (building_type == ConstructionManager.BUILD_TYPE.FOUR_BLOCK)
+		if (building_type == ConstructionManager.BUILD_TYPE.NINE_BLOCK)
         {
+			position = new Vector3(pos_x , pos_y, pos_z);
+
             string object_name = name;
             string[] map_position = object_name.Split('p');
 
             int x = int.Parse(map_position[1]);
             int y = int.Parse(map_position[2]);
 
-            if (!isMapBuildable(x + 1, y) || !isMapBuildable(x, y + 1) || !isMapBuildable(x + 1, y + 1))
+            if (!isMapBuildable(x + 1, y) || !isMapBuildable(x, y + 1) || !isMapBuildable(x + 1, y + 1) || 
+				!isMapBuildable(x + 2, y )||!isMapBuildable(x + 2, y + 1)||!isMapBuildable(x + 2, y + 2)||
+				!isMapBuildable(x, y + 2)||!isMapBuildable(x + 1, y + 2))
             {
                 return;
             }
