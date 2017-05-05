@@ -64,11 +64,13 @@ public class AstarMap : MonoBehaviour
 		if (_unit_position == null)
 			return false;
 
+		x = x - Astar.k_fix_size;
+		y = y - Astar.k_fix_size;
+
         for (int i = 0; i < _unit_position.Length; i++)
         {
           
             Vector2 _pos = new Vector2(_unit_position[i].x,_unit_position[i].z);
-            
             
 			if (isColideWithCircleToCircle(x, y, radius, _pos.x, _pos.y, _unit_status[i]._radius))
             {

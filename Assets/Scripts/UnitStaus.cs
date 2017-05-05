@@ -5,8 +5,8 @@ using UnityEngine;
 public class UnitStaus : MonoBehaviour {
 
 	public int _id =  0;
-
 	public float _radius = 0;
+	public float _speed = 0;
 
 	void Start()
 	{
@@ -16,6 +16,7 @@ public class UnitStaus : MonoBehaviour {
 			if (_id == (int)TableUnit.getInstance().data [i] ["id"]) 
 			{
 				_radius = (float)TableUnit.getInstance().data [i] ["radius"];
+				_speed = (float)TableUnit.getInstance().data [i] ["speed"];
 			}
 		}
 	}

@@ -63,7 +63,6 @@
      <Compile Include="Assets\ProCore\ProBuilder\API Examples\Procedural Mesh\ExtrudeRandomEdges.cs" />
      <Compile Include="Assets\ProCore\ProBuilder\API Examples\Runtime Editing\RuntimeEdit.cs" />
      <Compile Include="Assets\ProCore\ProBuilder\API Examples\Vertex Colors\HighlightNearestFace.cs" />
-     <Compile Include="Assets\Scripts\AI_Exam.cs" />
      <Compile Include="Assets\Scripts\Astar.cs" />
      <Compile Include="Assets\Scripts\AstarMap.cs" />
      <Compile Include="Assets\Scripts\Building.cs" />
@@ -75,9 +74,11 @@
      <Compile Include="Assets\Scripts\MapManager.cs" />
      <Compile Include="Assets\Scripts\MessageManager.cs" />
      <Compile Include="Assets\Scripts\Node.cs" />
+     <Compile Include="Assets\Scripts\PriorityQueue.cs" />
      <Compile Include="Assets\Scripts\ResourcesManager.cs" />
      <Compile Include="Assets\Scripts\ScrollRectSnap_CS.cs" />
      <Compile Include="Assets\Scripts\SetResolution.cs" />
+     <Compile Include="Assets\Scripts\SpatialAStar.cs" />
      <Compile Include="Assets\Scripts\TableUnit.cs" />
      <Compile Include="Assets\Scripts\UnitStaus.cs" />
      <None Include="Assets\ProCore\ProBuilder\Shader\pb_TransparentOverlay.shader" />
