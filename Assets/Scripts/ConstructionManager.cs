@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+
+
+
 public class ConstructionManager : MonoBehaviour
 {
     List<Dictionary<string, object>> data;
@@ -28,8 +31,6 @@ public class ConstructionManager : MonoBehaviour
     {
         FOUR_BLOCK = 4,
 		NINE_BLOCK = 9
-			
-
     }
 
     //public GameObject _standard_turret_prefab;
@@ -39,8 +40,6 @@ public class ConstructionManager : MonoBehaviour
     private void Start()
     {
      //   _target_to_build = Resources.Load();
-
-
     }
 
     private GameObject _target_to_build;
@@ -54,61 +53,107 @@ public class ConstructionManager : MonoBehaviour
     {
         return _building_type;
     }
-
-    public GameObject maps;
-
+		
     public bool _is_map_open = false;
 
     public int _min;
     public int _gas;
 
-    public void StartBuilding(string id)
+
+	// maps are not opened
+	public void startBuilding2(string id)
+	{
+		Dictionary<string,object> t_build = findMapFromId ("1001");
+
+		if (t_build == null)
+			return;
+		
+		_min = (int)t_build["min"];
+		_gas = (int)t_build["gas"];
+
+		if (_min > ResourcesManager.getInstance().getMin())
+		{
+			MessageManager.getInstance().popupMessage("미네랄이 부족합니다.");
+			return;
+		}
+
+		if (_gas > ResourcesManager.getInstance().getGas())
+		{
+			MessageManager.getInstance().popupMessage("가스가 부족합니다.");
+			return;
+		}
+
+		if ((int)t_build["build_type"] == 33)
+		{
+			_building_type = BUILD_TYPE.NINE_BLOCK;
+		}
+
+		if ((int)t_build["id"] == 1001)
+		{
+			_target_to_build = Resources.Load("Prefabs/FarmBuild") as GameObject;
+		}
+	}
+
+	public Dictionary<string,object> findMapFromId(string id)
+	{
+		for (int i = 0; i < data.Count; i++)
+		{
+			//int iid = (int)data[i]["id"];
+			if ((int)data[i]["id"] == int.Parse(id))
+			{
+				return data [i];
+			}
+		}
+
+		return null;
+	}
+
+
+	// maps are opened
+	public void startBuilding(string id)
     {
-        for (int i = 0; i < data.Count; i++)
-        {
-            //int iid = (int)data[i]["id"];
-            if ((int)data[i]["id"] == int.Parse(id))
-            {
-                if ((int)data[i]["min"] > ResourcesManager.getInstance().getMin())
-                {
-                    MessageManager.getInstance().popupMessage("미네랄이 부족합니다.");
-                    return;
-                }
+		Dictionary<string,object> t_build = findMapFromId ("1001");
 
-                if ((int)data[i]["gas"] > ResourcesManager.getInstance().getGas())
-                {
-                    MessageManager.getInstance().popupMessage("가스가 부족합니다.");
-                    return;
-                }
+		if (t_build == null)
+			return;
+		
+		_min = (int)t_build["min"];
+		_gas = (int)t_build["gas"];
 
-                print("id " + data[i]["id"] + " " +
-                   "min " + data[i]["min"] + " " +
-                   "gas " + data[i]["gas"] + " " +
-                   "description " + data[i]["description"] + " " +
-                   "build_type " + data[i]["build_type"]);
+		if (_min > ResourcesManager.getInstance().getMin())
+		{
+			MessageManager.getInstance().popupMessage("미네랄이 부족합니다.");
+			return;
+		}
 
-                _min = (int)data[i]["min"];
-                _gas = (int)data[i]["gas"];
+		if (_gas > ResourcesManager.getInstance().getGas())
+		{
+			MessageManager.getInstance().popupMessage("가스가 부족합니다.");
+			return;
+		}
+			
 
-                if ((int)data[i]["build_type"] == 33)
-                {
-					_building_type = BUILD_TYPE.NINE_BLOCK;
-                }
 
-                if ((int)data[i]["id"] == 1001)
-                {
-                    _target_to_build = Resources.Load("Prefabs/FarmBuild") as GameObject;
-                }
-            }
-        }
 
+		if ((int)t_build["build_type"] == 33)
+		{
+			_building_type = BUILD_TYPE.NINE_BLOCK;
+		}
+
+		if ((int)t_build["id"] == 1001)
+		{
+			_target_to_build = Resources.Load("Prefabs/FarmBuild") as GameObject;
+		}
+
+
+	
         if (_is_map_open == false)
         {
-            maps.SetActive(true);
+			MapManager.getInstance ().setMapsState (true);
             _is_map_open = true;
         }else if (_is_map_open == true)
         {
-            maps.SetActive(false);
+			MapManager.getInstance ().setMapsState (false);
             _is_map_open = false;
         }
     }

@@ -36,6 +36,7 @@ public class MapManager : MonoBehaviour {
 
                 string name = string.Format("SF_Env_Tile_Grass_p{0}p{1}",i,j);
                 make_object.name = name;
+				make_object.GetComponent<Node> ().setMapState (false);
 
                 _maps[i,j] = make_object;
             }
@@ -50,7 +51,6 @@ public class MapManager : MonoBehaviour {
 
     void Start()
     {
-        
       //  unableToBuild(2, 2);
       //  unableToBuild(2, 5);
       //  unableToBuild(3, 4);
@@ -59,16 +59,22 @@ public class MapManager : MonoBehaviour {
 
     public void unableToBuild(int x,int y)
     {
-
-
         GameObject map = _maps[x, y];
 
         if (map)
         {
-         
             map.GetComponent<Node>().setBuildable(false);
-
         }
     }
+
+	public void setMapsState(bool is_open)
+	{
+		for (int i = 0; i < map_width_size; i++) {
+			for (int j = 0; j < map_hight_size; j++) {
+				_maps [i, j].GetComponent<Node> ().setMapState (is_open);
+			}
+		}
+
+	}
 
 }

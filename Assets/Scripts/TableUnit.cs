@@ -13,6 +13,7 @@ public class TableUnit : MonoBehaviour {
 
 
 	public List<Dictionary<string, object>> data;
+
 	void Awake()
 	{
 		if (_instance != null)

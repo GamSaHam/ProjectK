@@ -25,14 +25,16 @@ namespace FoW
         public float unitMoveSpeed = 3.0f;
         public float cameraSpeed = 20.0f;
         public Transform highlight;
-        public FogOfWarUnit[] originalUnits;
-        public Transform[] enemyUnits;
+	
+
+
+
         public LayerMask unitLayer;
 
         FogOfWar _fog;
         Texture2D _texture;
         GUIStyle _panelStyle;
-        int _visibleEnemies = 0;
+
 
         Camera _camera;
         Transform _cameraTransform;
@@ -130,6 +132,16 @@ namespace FoW
             GUI.Label(new Rect(10 + mappos.x - 10, Screen.height - mappos.y - 10, 20, 20), text);
         }
 
+
+
+
+		public void removeUnit(GameObject obj)
+		{
+			
+		}
+
+
+
         void OnGUI()
         {
             bool minimal = Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer;
@@ -208,18 +220,22 @@ namespace FoW
             GUI.DrawTexture(new Rect(10, Screen.height - panelwidth + 10, panelwidth - 20, panelwidth - 20), _texture);
 
             DrawOnMap("C", _cameraTransform.position, panelwidth);
-            for (int i = 0; i < originalUnits.Length; ++i)
-                DrawOnMap("U", originalUnits[i].transform.position, panelwidth);
+		
+			List<GameObject> _unit_list = UnitManager.getInstance ()._unit_list;
 
-            _visibleEnemies = 0;
-            for (int i = 0; i < enemyUnits.Length; ++i)
-            {
-                if (!_fog.IsInPartialFog(enemyUnits[i].position))
-                {
-                    ++_visibleEnemies;
-                    DrawOnMap("E", enemyUnits[i].position, panelwidth);
-                }
-            }
+			for (int i = 0; i < _unit_list.Count; ++i) 
+			{
+				if(_unit_list[i].GetComponent<UnitStaus>()._is_enemy ==false)
+					DrawOnMap ("U", _unit_list[i].transform.position, panelwidth);
+			}
+
+			for (int i = 0; i < _unit_list.Count; ++i) 
+			{
+				if(_unit_list[i].GetComponent<UnitStaus>()._is_enemy ==true)
+					DrawOnMap ("E", _unit_list[i].transform.position, panelwidth);
+			}
+
+
         }
     }
 }

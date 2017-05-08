@@ -190,8 +190,15 @@ namespace FoW
             Vector2i mappos = WorldPositionToFogPosition(position);
             mappos.x = Mathf.Clamp(mappos.x, 0, mapResolution - 1);
             mappos.y = Mathf.Clamp(mappos.y, 0, mapResolution - 1);
-            return texture.GetRawTextureData()[mappos.y * mapResolution + mappos.x];
+			return _raw_texture_data[mappos.y * mapResolution + mappos.x];
         }
+
+		byte[] _raw_texture_data;
+		void FixedUpdate()
+		{
+			_raw_texture_data =  texture.GetRawTextureData();
+
+		}
 
         public bool IsInFog(Vector3 position, byte minfog)
         {

@@ -7,11 +7,15 @@ public class Node : MonoBehaviour
     public FogOfWar _fog;
     public bool _is_builable = true;
 
+	public bool _is_open = false;
+
+	MeshRenderer _mesh_renderer;
     void Awake()
     {
         _fog = GameObject.Find("Main Camera").GetComponent<FogOfWar>();
         _material = GetComponent<MeshRenderer>().materials[0];
         _material.color = Color.green;
+		_mesh_renderer = GetComponent<MeshRenderer> ();
 
         if (_is_builable == false)
         {
@@ -21,8 +25,26 @@ public class Node : MonoBehaviour
 
     public byte[] select_data;
 
+	public void setMapState(bool is_open)
+	{
+		_is_open = is_open;
+
+		if (_is_open == true) {
+			_mesh_renderer.enabled = true;
+		
+		} else {
+		
+			_mesh_renderer.enabled = false;
+		}
+
+	}
+
     private void OnMouseDown()
     {
+		if (!_is_open)
+			return;
+			
+
         if (Input.mousePosition.y < 230)
         {
             return;
@@ -30,13 +52,9 @@ public class Node : MonoBehaviour
         if (_is_builable == false)
         {
             MessageManager.getInstance().popupMessage("건설이 불가능 합니다.");
-
             return;
-
         }
-
-        byte[] original = _fog.texture.GetRawTextureData();
-
+			
         if (_fog.IsInCompleteFog(transform.position))
         {
             MessageManager.getInstance().popupMessage("시야를 확보해 주세요.");
@@ -79,6 +97,10 @@ public class Node : MonoBehaviour
 
     private void OnMouseEnter()
     {
+		if (!_is_open) {
+			return;
+		}
+
         GameObject _target_to_build = ConstructionManager._instance.getTargetBuilding();
         ConstructionManager.BUILD_TYPE building_type = ConstructionManager._instance.getBuildingType();
 
@@ -121,6 +143,9 @@ public class Node : MonoBehaviour
 
     private void OnMouseExit()
     {
+		if (!_is_open)
+			return;
+
         GameObject _target_to_build = ConstructionManager._instance.getTargetBuilding();
         ConstructionManager.BUILD_TYPE building_type = ConstructionManager._instance.getBuildingType();
 
