@@ -105,6 +105,18 @@ public class Astar : MonoBehaviour
 	
 	}
 
+	public void stopAstar()
+	{
+		_is_searching = false;
+		_rigidbody.velocity = Vector3.zero;
+		_animation_controller.SetState (AnimationController.ANIMATION_STATE.IDLE);
+		waypoints = null;
+
+
+		if (_t != null)
+			_t.Abort ();
+	}
+
 
 	public void executeAstar()
 	{
@@ -220,9 +232,7 @@ public class Astar : MonoBehaviour
             _currentWaypoint = _currentWaypoint + 1;
             if (_currentWaypoint >= waypoints.Length)
             {
-                _is_searching = false;
-				_rigidbody.velocity = Vector3.zero;
-				GetComponent<AnimationController> ().SetState (AnimationController.ANIMATION_STATE.IDLE);
+				stopAstar ();
                 return;
             }
         }

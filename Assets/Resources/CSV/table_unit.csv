@@ -1,4 +1,4 @@
-id,radius,speed,attack_erea,attack_type,attack_damage,hp
-1001,0.3,2.5,0.7,normal,20.0,120.0
-1002,0.5,2.0,0.5,normal,20.0,150.0
-1003,1.0,2.0,0.6,normal,20.0,150.0
+id,radius,speed,attack_erea,attack_type,attack_damage,hp,search_erea
+1001,0.3,2.5,0.7,normal,20.0,120.0,5.0
+1002,0.3,2.0,3.5,magic,10.0,70.0,6.0
+1003,1.0,2.0,0.6,normal,20.0,150.0,5.0

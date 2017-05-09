@@ -57,6 +57,7 @@
      <Compile Include="Assets\FogOfWar\Samples\Test3D\FogOfWarTestEnemy.cs" />
      <Compile Include="Assets\FogOfWar\Samples\Test3D\FogOfWarTestGUI.cs" />
      <Compile Include="Assets\FogOfWar\Vector2i.cs" />
+     <Compile Include="Assets\Particle Ribbon\Scripts\ReverseNormals.cs" />
      <Compile Include="Assets\ProCore\ProBuilder\API Examples\Icosphere FFT\Scripts\CameraControls.cs" />
      <Compile Include="Assets\ProCore\ProBuilder\API Examples\Icosphere FFT\Scripts\IcoBumpin.cs" />
      <Compile Include="Assets\ProCore\ProBuilder\API Examples\Misc\HueCube.cs" />
@@ -70,6 +71,7 @@
      <Compile Include="Assets\Scripts\AttackFinish.cs" />
      <Compile Include="Assets\Scripts\Building.cs" />
      <Compile Include="Assets\Scripts\BuildingManager.cs" />
+     <Compile Include="Assets\Scripts\Bullet.cs" />
      <Compile Include="Assets\Scripts\CSVReader.cs" />
      <Compile Include="Assets\Scripts\CSVUsing.cs" />
      <Compile Include="Assets\Scripts\ComputerAI.cs" />
@@ -113,6 +115,7 @@
      <None Include="Assets\FogOfWar\Resources\ClearFogShader.shader" />
      <None Include="Assets\ProCore\ProBuilder\Shader\pb_VertexShader.shader" />
      <None Include="Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
+     <None Include="Assets\Particle Ribbon\readme_Simple_Particle_Ribbon.txt" />
      <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
      <None Include="Assets\ProCore\ProBuilder\readme.txt" />
      <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />

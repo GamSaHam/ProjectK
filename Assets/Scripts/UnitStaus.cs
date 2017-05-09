@@ -14,6 +14,8 @@ public class UnitStaus : MonoBehaviour {
 	public float _attack_damage = 0;
 	public float _hp = 0;
 	public float _current_hp = 0;
+	public float _search_erea = 0;
+
 	void Start()
 	{
 		
@@ -32,6 +34,7 @@ public class UnitStaus : MonoBehaviour {
 				_attack_type = (string)dic["attack_type"];
 				_attack_damage = (float)dic ["attack_damage"];
 				_hp = (float)dic ["hp"];
+				_search_erea = (float)dic ["search_erea"];
 
 			}
 		}
