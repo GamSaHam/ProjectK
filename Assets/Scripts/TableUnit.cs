@@ -26,10 +26,6 @@ public class TableUnit : MonoBehaviour {
 		//File.WriteAllText(Application.dataPath + "/Resources/CSV/example.csv", File.ReadAllText(Application.dataPath + "/Resources/CSV/example.csv", Encoding.ASCII), Encoding.UTF8);
 		data = CSVReader.Read("CSV/table_unit");
 
-		for (int i = 0; i < data.Count; i++)
-		{
-			print("id " + data[i]["id"] + " " +
-				"radius " + data[i]["radius"]);
-		}
+
 	}
 }

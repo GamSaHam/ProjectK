@@ -87,40 +87,26 @@ public class Astar : MonoBehaviour
 	int _start_x;
 	int _start_y;
 
+	int _end_x;
+	int _end_y;
+
 	public void startSearching()
 	{
+		_is_astar_stop = false;
+
+		if (GetComponent<UnitStaus> ()._is_air) {
+			waypoints = new Vector3[1];
+			waypoints [0] = _target;
+			_is_searching = true;
+			return;
+		}
+
 
 		_start_x = (int)Mathf.Round(transform.position.x + k_fix_size);
 		_start_y = (int)Mathf.Round(transform.position.z + k_fix_size);
 
 
-		if (_t != null)
-			_t.Abort ();
 
-		ThreadStart th = new ThreadStart(executeAstar);
-		_t = new Thread(th);
-		_t.Start ();
-
-	
-	
-	}
-
-	public void stopAstar()
-	{
-		_is_searching = false;
-		_rigidbody.velocity = Vector3.zero;
-		_animation_controller.SetState (AnimationController.ANIMATION_STATE.IDLE);
-		waypoints = null;
-
-
-		if (_t != null)
-			_t.Abort ();
-	}
-
-
-	public void executeAstar()
-	{
-		print ("executeAstar");
 		_search_map_list.Clear ();
 
 		for(int i=0;i<grid_width;i++)
@@ -136,11 +122,10 @@ public class Astar : MonoBehaviour
 			}
 		}
 
-		int start_x = _start_x;
-		int start_y = _start_y;
 
-		int end_x =(int)Mathf.Round(_target.x + k_fix_size);
-		int end_y = (int)Mathf.Round(_target.z + k_fix_size);
+
+		_end_x =(int)Mathf.Round(_target.x + k_fix_size);
+		_end_y = (int)Mathf.Round(_target.z + k_fix_size);
 
 		bool is_existed_building = false;
 
@@ -148,10 +133,10 @@ public class Astar : MonoBehaviour
 		{
 			Point point = AstarMap.getInstance ()._close_map_list [i];
 
-			if (point.X == end_x && point.Y == end_y) 
+			if (point.X == _end_x && point.Y == _end_y) 
 			{
 				is_existed_building = true;
-			
+
 			}
 
 			grid [point.X, point.Y].IsWall = true;
@@ -159,7 +144,7 @@ public class Astar : MonoBehaviour
 
 		if (is_existed_building) 
 		{	
-			List<Point> open_list = BuildingManager.getInstance ().getPointList (new Point(end_x,end_y));
+			List<Point> open_list = BuildingManager.getInstance ().getPointList (new Point(_end_x,_end_y));
 
 			for (int i = 0; i < open_list.Count; i++) 
 			{
@@ -170,21 +155,45 @@ public class Astar : MonoBehaviour
 		}
 
 
-
-
 		aStar = new MySolver<MyPathNode, Object>(grid);
 
+		if (_t != null)
+			_t.Abort ();
+
+		ThreadStart th = new ThreadStart(executeAstar);
+		_t = new Thread(th);
+		_t.Start ();
+
+	}
+
+	public bool _is_astar_stop = false;
+
+	public void stopAstar()
+	{
+		_is_searching = false;
+		_rigidbody.velocity = Vector3.zero;
+		_animation_controller.SetState (AnimationController.ANIMATION_STATE.IDLE);
+		waypoints = null;
+		_is_astar_stop = true;
+	}
 
 
-		IEnumerable<MyPathNode> path  = aStar.Search (new Point (start_x, start_y), new Point (end_x, end_y), null,_unit_status._radius,false);
+	public void executeAstar()
+	{
+
+		IEnumerable<MyPathNode> path  = aStar.Search (new Point (_start_x, _start_y), new Point (_end_x, _end_y), null,_unit_status._radius,false,ref _is_astar_stop);
 
 		if (path == null) 
 		{
-			path = aStar.Search (new Point (start_x, start_y), new Point (end_x, end_y), null,_unit_status._radius,true);
+			path = aStar.Search (new Point (_start_x, _start_y), new Point (_end_x, _end_y), null,_unit_status._radius,true,ref _is_astar_stop);
+
 		}
 
 		foreach (MyPathNode node in path)
 		{
+			if (_is_astar_stop)
+				return;
+
 			_search_map_list.Add (new Point (node.X, node.Y));
 		}
 
@@ -226,7 +235,7 @@ public class Astar : MonoBehaviour
         Vector3 target = waypoints[_currentWaypoint];
         target.y = pos.y;
 
-		pos = Vector3.MoveTowards(pos, target, _unit_status._speed * Time.deltaTime);
+		pos = Vector3.MoveTowards(pos, target, _unit_status._current_speed * Time.deltaTime);
         if ((pos - target).sqrMagnitude < 0.4f)
         {
             _currentWaypoint = _currentWaypoint + 1;
@@ -237,7 +246,7 @@ public class Astar : MonoBehaviour
             }
         }
         else
-			_rigidbody.rotation = Quaternion.Slerp(_rigidbody.rotation, Quaternion.LookRotation(target - pos, Vector3.up), _unit_status._speed * Time.deltaTime);
+			_rigidbody.rotation = Quaternion.Slerp(_rigidbody.rotation, Quaternion.LookRotation(target - pos, Vector3.up), _unit_status._current_speed * Time.deltaTime);
 
         _rigidbody.position = pos;
     }
