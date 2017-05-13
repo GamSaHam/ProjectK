@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Threading;
 using System.Collections;
 
 public class MySolver<TPathNode, TUserContext> : SpatialAStar<TPathNode, TUserContext> where TPathNode : IPathNode<TUserContext>
@@ -66,6 +65,7 @@ public class Astar : MonoBehaviour
 		_rigidbody = GetComponent<Rigidbody> ();
 		_unit_status = GetComponent<UnitStaus> ();
 
+		_target_transform = GameObject.Find ("target").transform;
 		_target = new Vector3 (_target_transform.position.x, _target_transform.position.y, _target_transform.position.z);
 		_animation_controller = GetComponent<AnimationController> ();
 
@@ -82,7 +82,6 @@ public class Astar : MonoBehaviour
 		_target = target;
 	}
 
-	Thread _t;
 
 	int _start_x;
 	int _start_y;
@@ -90,9 +89,10 @@ public class Astar : MonoBehaviour
 	int _end_x;
 	int _end_y;
 
+	Coroutine co;
+
 	public void startSearching()
 	{
-		_is_astar_stop = false;
 
 		if (GetComponent<UnitStaus> ()._is_air) {
 			waypoints = new Vector3[1];
@@ -104,8 +104,8 @@ public class Astar : MonoBehaviour
 
 		_start_x = (int)Mathf.Round(transform.position.x + k_fix_size);
 		_start_y = (int)Mathf.Round(transform.position.z + k_fix_size);
-
-
+		_end_x =(int)Mathf.Round(_target.x + k_fix_size);
+		_end_y = (int)Mathf.Round(_target.z + k_fix_size);
 
 		_search_map_list.Clear ();
 
@@ -121,11 +121,6 @@ public class Astar : MonoBehaviour
 				};
 			}
 		}
-
-
-
-		_end_x =(int)Mathf.Round(_target.x + k_fix_size);
-		_end_y = (int)Mathf.Round(_target.z + k_fix_size);
 
 		bool is_existed_building = false;
 
@@ -157,38 +152,54 @@ public class Astar : MonoBehaviour
 
 		aStar = new MySolver<MyPathNode, Object>(grid);
 
-		if (_t != null)
-			_t.Abort ();
 
-		ThreadStart th = new ThreadStart(executeAstar);
-		_t = new Thread(th);
-		_t.Start ();
-
+	
+		co = StartCoroutine (aStar.Search (gameObject,new Point (_start_x, _start_y), new Point (_end_x, _end_y), null, (float)_unit_status._radius, false));
 	}
 
-	public bool _is_astar_stop = false;
+	//IEnumerable<MyPathNode> path 
+	public void searchFinish(object obj )
+	{
+		StopCoroutine (co);
+		IEnumerable<MyPathNode> path = (IEnumerable<MyPathNode>)obj;
+		foreach (MyPathNode node in path)
+		{
+			_search_map_list.Add (new Point (node.X, node.Y));
+		}
+		print (_search_map_list.Count);
+		doSearching ();
+	}
+
+	public void research()
+	{
+		
+		StopCoroutine (co);
+		co = StartCoroutine (aStar.Search (gameObject,new Point (_start_x, _start_y), new Point (_end_x, _end_y), null, _unit_status._radius, true));
+	}
+
 
 	public void stopAstar()
 	{
+		if(co != null)
+			StopCoroutine (co);
+		
 		_is_searching = false;
 		_rigidbody.velocity = Vector3.zero;
 		_animation_controller.SetState (AnimationController.ANIMATION_STATE.IDLE);
 		waypoints = null;
-		_is_astar_stop = true;
+
 	}
 
+	void OnApplicationQuit()
+	{
+		
+	}
 
 	public void executeAstar()
 	{
 
-		IEnumerable<MyPathNode> path  = aStar.Search (new Point (_start_x, _start_y), new Point (_end_x, _end_y), null,_unit_status._radius,false,ref _is_astar_stop);
-
-		if (path == null) 
-		{
-			path = aStar.Search (new Point (_start_x, _start_y), new Point (_end_x, _end_y), null,_unit_status._radius,true,ref _is_astar_stop);
-
-		}
-
+	
+		/*
 		foreach (MyPathNode node in path)
 		{
 			if (_is_astar_stop)
@@ -197,7 +208,8 @@ public class Astar : MonoBehaviour
 			_search_map_list.Add (new Point (node.X, node.Y));
 		}
 
-		doSearching ();
+
+		doSearching ();*/
 	}
 
     public Vector3[] waypoints;

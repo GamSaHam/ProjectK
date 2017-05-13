@@ -1,12 +1,14 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\FogOfWar\FogOfWar.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AttackFinish.cs">
     <Files>
-      <File FileName="Assets\Scripts\AI.cs" Line="100" Column="5" />
-      <File FileName="Assets\Scripts\Astar.cs" Line="184" Column="47" />
-      <File FileName="Assets\Scripts\SpatialAStar.cs" Line="197" Column="20" />
-      <File FileName="Assets\Scripts\AnimationController.cs" Line="12" Column="3" />
-      <File FileName="Assets\FogOfWar\FogOfWar.cs" Line="39" Column="59" />
+      <File FileName="Assets\Scripts\AI.cs" Line="96" Column="55" />
+      <File FileName="Assets\Scripts\Astar.cs" Line="157" Column="36" />
+      <File FileName="Assets\Scripts\SpatialAStar.cs" Line="205" Column="10" />
+      <File FileName="Assets\Scripts\PriorityQueue.cs" Line="93" Column="3" />
+      <File FileName="Assets\Scripts\AnimationController.cs" Line="86" Column="3" />
+      <File FileName="Assets\Scripts\EventManager.cs" Line="51" Column="14" />
+      <File FileName="Assets\Scripts\AttackFinish.cs" Line="33" Column="55" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

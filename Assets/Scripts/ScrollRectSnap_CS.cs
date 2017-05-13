@@ -21,10 +21,7 @@ public class ScrollRectSnap_CS : MonoBehaviour {
         int bttnLenght = bttn.Length;
         distance = new float[bttnLenght];
 
-        // Get distance between buttons
         bttnDistance = (int)Mathf.Abs(bttn[1].GetComponent<RectTransform>().anchoredPosition.x - bttn[0].GetComponent<RectTransform>().anchoredPosition.x);
-
-        print(bttnDistance);
     }
 
     private void Update()

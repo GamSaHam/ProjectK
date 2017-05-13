@@ -1,11 +1,6 @@
 C:\dev\ProjectK\Temp\bin\Debug\Assembly-CSharp.dll
 C:\dev\ProjectK\Temp\bin\Debug\Assembly-CSharp.pdb
-C:\dev\ProjectK\Temp\bin\Debug\KDTree.dll
 C:\dev\ProjectK\Temp\bin\Debug\nunit.framework.dll
-C:\dev\ProjectK\Temp\bin\Debug\pb_Stl.dll
-C:\dev\ProjectK\Temp\bin\Debug\ProBuilderCore-Unity5.dll
-C:\dev\ProjectK\Temp\bin\Debug\ProBuilderMeshOps-Unity5.dll
-C:\dev\ProjectK\Temp\bin\Debug\Triangle.dll
 C:\dev\ProjectK\Temp\bin\Debug\UnityEditor.dll
 C:\dev\ProjectK\Temp\bin\Debug\UnityEditor.iOS.Extensions.Common.dll
 C:\dev\ProjectK\Temp\bin\Debug\UnityEditor.iOS.Extensions.Xcode.dll
@@ -24,7 +19,6 @@ C:\dev\ProjectK\Temp\bin\Debug\Unity.UNetWeaver.dll
 C:\dev\ProjectK\Temp\bin\Debug\Unity.CecilTools.dll
 C:\dev\ProjectK\Temp\bin\Debug\Mono.Cecil.Pdb.dll
 C:\dev\ProjectK\Temp\bin\Debug\Mono.Cecil.Mdb.dll
-C:\dev\ProjectK\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
 C:\dev\ProjectK\Temp\bin\Debug\UnityEngine.xml
 C:\dev\ProjectK\Temp\bin\Debug\UnityEditor.xml
 C:\dev\ProjectK\Temp\bin\Debug\UnityEngine.UI.xml
