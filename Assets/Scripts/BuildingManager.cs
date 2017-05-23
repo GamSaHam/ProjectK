@@ -2,6 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class Point
+{
+    public int X;
+    public int Y;
+
+    public Point(int x, int y)
+    {
+        X = x;
+        Y = y;
+    }
+}
+
 public class BuildingManager : MonoBehaviour 
 {
     public static BuildingManager _instance;
@@ -23,63 +35,79 @@ public class BuildingManager : MonoBehaviour
 
     public class BuildingState
     {
-        GameObject _building;
+        public GameObject _building;
 		public int X{ get; set;}
 		public int Y{ get; set;}
         public ConstructionManager.BUILD_TYPE _type;
-        
+
+
+
         public BuildingState(GameObject building,int x,int y, ConstructionManager.BUILD_TYPE type)
         {
             _building = building;
             X = x;
             Y = y;
             _type = type;
-            
+   
+        
+
         }
+
+
 
     }
 
-	List<BuildingState> _buildings = new List<BuildingState>();
+	public List<BuildingState> _building_list = new List<BuildingState>();
 
 
-	public void setUsedMap(int x,int y)
+	public void setMapBuildable(int x,int y,bool is_able = false)
 	{
-		MapManager.getInstance().unableToBuild(x, y);
-		AstarMap.getInstance ().closeMap (y , x);
-	
-	}
+		MapManager.getInstance().setBuildable(x, y, is_able);
+ 
+    }
+
+    static public float getRadius(ConstructionManager.BUILD_TYPE build_type)
+    {
+
+        if (build_type == ConstructionManager.BUILD_TYPE.NINE_BLOCK)
+        {
+            return 3f;
+        }
+
+        return 2f;
+
+    }
 
 
     public void insertBuilding(GameObject game_object,int x,int y,ConstructionManager.BUILD_TYPE build_type)
     {
-
-		setUsedMap (x,y);
+        setMapBuildable(x,y);
 
         if (build_type == ConstructionManager.BUILD_TYPE.FOUR_BLOCK)
         {
 
-			setUsedMap (x+1,y);
-			setUsedMap (x,y+1);
-			setUsedMap (x+1,y+1);
+            setMapBuildable(x+1,y);
+            setMapBuildable(x,y+1);
+            setMapBuildable(x+1,y+1);
 
         }
 
 		if (build_type == ConstructionManager.BUILD_TYPE.NINE_BLOCK)
 		{
-			setUsedMap (x+1,y);
-			setUsedMap (x,y+1);
-			setUsedMap (x+1,y+1);
+            setMapBuildable(x+1,y);
+            setMapBuildable(x,y+1);
+            setMapBuildable(x+1,y+1);
 
-			setUsedMap (x+2,y);
-			setUsedMap (x+2,y+1);
-			setUsedMap (x+2,y+2);
-			setUsedMap (x,y+2);
-			setUsedMap (x+1,y+2);
+            setMapBuildable(x+2,y);
+            setMapBuildable(x+2,y+1);
+            setMapBuildable(x+2,y+2);
+            setMapBuildable(x,y+2);
+            setMapBuildable(x+1,y+2);
 
 		}
 
         BuildingState building_state = new BuildingState(game_object, x, y, build_type);
-		_buildings.Add(building_state);
+        _building_list.Add(building_state);
 
     }
 
@@ -110,11 +138,11 @@ public class BuildingManager : MonoBehaviour
 		return false;
 	}
 
-	public BuildingState getBuildingState(Point p)
+	public BuildingState getBuildingStateByPoint(Point p)
 	{
-		for (int i = 0; i < _buildings.Count; i++) 
+		for (int i = 0; i < _building_list.Count; i++) 
 		{
-			BuildingState build_state = _buildings [i];
+			BuildingState build_state = _building_list[i];
 			if (isEnterErea (p, build_state)) {
 				return build_state;
 			}
@@ -140,7 +168,7 @@ public class BuildingManager : MonoBehaviour
 	{
 		List<Point> open_list = new List<Point> ();
 
-		BuildingState building = getBuildingState (p);
+		BuildingState building = getBuildingStateByPoint (p);
 
 		if (building._type == ConstructionManager.BUILD_TYPE.NINE_BLOCK) 
 		{
@@ -160,6 +188,48 @@ public class BuildingManager : MonoBehaviour
 
 	}
 
+    public void removeBuilding(GameObject obj)
+    {
+        for (int i = 0; i < _building_list.Count; i++)
+        {
+            if (_building_list[i]._building == obj)
+            {
+                int x = _building_list[i].X;
+                int y = _building_list[i].Y;
+                ConstructionManager.BUILD_TYPE build_type = _building_list[i]._type;
+                setMapBuildable(x, y,true);
+
+                if (build_type == ConstructionManager.BUILD_TYPE.FOUR_BLOCK)
+                {
+
+                    setMapBuildable(x + 1, y, true);
+                    setMapBuildable(x, y + 1, true);
+                    setMapBuildable(x + 1, y + 1, true);
+
+                }
+
+                if (build_type == ConstructionManager.BUILD_TYPE.NINE_BLOCK)
+                {
+                    setMapBuildable(x + 1, y, true);
+                    setMapBuildable(x, y + 1, true);
+                    setMapBuildable(x + 1, y + 1, true);
+
+                    setMapBuildable(x + 2, y, true);
+                    setMapBuildable(x + 2, y + 1, true);
+                    setMapBuildable(x + 2, y + 2, true);
+                    setMapBuildable(x, y + 2, true);
+                    setMapBuildable(x + 1, y + 2, true);
+
+                }
+
+                _building_list.RemoveAt(i);
+
+                break;
+            }
+
+        }
+
+    }
 
 
 

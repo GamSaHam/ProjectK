@@ -44,11 +44,12 @@ public class Node : MonoBehaviour
 		if (!_is_open)
 			return;
 			
-
+        // 경계 설정
         if (Input.mousePosition.y < 230)
         {
             return;
         }
+
         if (_is_builable == false)
         {
             MessageManager.getInstance().popupMessage("건설이 불가능 합니다.");
@@ -61,7 +62,9 @@ public class Node : MonoBehaviour
             return;
         }
 
-        ConstructionManager._instance.commandBuild(transform.position.x, transform.position.y, transform.position.z,gameObject.name);
+
+        
+        ConstructionManager._instance.commandBuild(transform.position.x, transform.position.y, transform.position.z,gameObject.name,false);
 
       
        

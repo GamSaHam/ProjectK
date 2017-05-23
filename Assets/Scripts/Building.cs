@@ -16,11 +16,11 @@ public class Building : MonoBehaviour {
         _material = Resources.Load("Materials/Medieval_Material") as Material;
 
         gameObject.GetComponent<Renderer>().material.color = _current_color;
-        StartCoroutine("startBuilding");
+        StartCoroutine("init");
     }
 
 
-    IEnumerator startBuilding()
+    IEnumerator init()
     {
 
         float _current_time = 0;

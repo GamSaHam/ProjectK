@@ -22,6 +22,8 @@ public class UnitStaus : MonoBehaviour {
 
 	public bool _is_air = false;
 
+    public bool _is_building = false;
+
 	public enum ATTACK_TYPE2
 	{
 		GROUND = 1,
@@ -101,7 +103,8 @@ public class UnitStaus : MonoBehaviour {
 		_current_speed = _speed;
 
 		if (_is_enemy == true) {
-			GetComponent<FogOfWarUnit> ().enabled = false;
+            if(GetComponent<FogOfWarUnit>())
+			    GetComponent<FogOfWarUnit> ().enabled = false;
 
 		} else {
 			HideInFog[] hide_in_foges = GetComponentsInChildren<HideInFog> ();

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour {
 
-	public const int map_width_size = 10;
-	public const int map_hight_size = 30;
+	public const int map_width_size = 20;
+	public const int map_hight_size = 20;
 
     public static MapManager _instance;
 
@@ -31,7 +31,7 @@ public class MapManager : MonoBehaviour {
 
 				GameObject make_object = Instantiate(_target_to_build, Vector3.zero, Quaternion.identity);
                 make_object.transform.parent = _building_object.transform;
-				make_object.transform.localPosition = new Vector3 (-48.08f + (j * 2), 0.2f, -48.11f + (i * 2));
+				make_object.transform.localPosition = new Vector3 (-48.00f + (j * 5), 0.2f, -48.00f + (i * 5));
 
 
                 string name = string.Format("SF_Env_Tile_Grass_p{0}p{1}",i,j);
@@ -57,21 +57,27 @@ public class MapManager : MonoBehaviour {
         
     }
 
-    public void unableToBuild(int x,int y)
+    public void setBuildable(int x,int y,bool is_able)
     {
         GameObject map = _maps[x, y];
 
         if (map)
         {
-            map.GetComponent<Node>().setBuildable(false);
+            if(is_able)
+                map.GetComponent<Node>().setBuildable(true);
+            else
+                map.GetComponent<Node>().setBuildable(false);
         }
     }
 
-	public void setMapsState(bool is_open)
+    bool _is_open = false;
+	public void toogleMapsState()
 	{
-		for (int i = 0; i < map_width_size; i++) {
+        _is_open = !_is_open;
+
+        for (int i = 0; i < map_width_size; i++) {
 			for (int j = 0; j < map_hight_size; j++) {
-				_maps [i, j].GetComponent<Node> ().setMapState (is_open);
+				_maps [i, j].GetComponent<Node> ().setMapState (_is_open);
 			}
 		}
 
