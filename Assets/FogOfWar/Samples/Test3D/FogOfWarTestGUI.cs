@@ -4,32 +4,11 @@ using System.Collections.Generic;
 // WARNING: This code is crap. Do not use it in your game. Do not read it. It will make your brain bleed funny colors.
 namespace FoW
 {
-    class FOWUnit
-    {
-        public Vector3 destination;
-        public FogOfWarUnit unit;
-        public Transform transform { get; private set; }
-        public Vector3 position { get { return transform.position; } set { transform.position = value; } }
-
-        public FOWUnit(FogOfWarUnit u)
-        {
-            unit = u;
-            transform = unit.transform;
-            destination = unit.transform.position;
-        }
-    }
-
     [AddComponentMenu("FogOfWar/Test/FogOfWarTestGUI")]
     public class FogOfWarTestGUI : MonoBehaviour
     {
-        public float unitMoveSpeed = 3.0f;
         public float cameraSpeed = 20.0f;
-        public Transform highlight;
-	
-
-
-
-        public LayerMask unitLayer;
+  
 
         FogOfWar _fog;
         Texture2D _texture;
@@ -39,7 +18,7 @@ namespace FoW
         Camera _camera;
         Transform _cameraTransform;
 
-        List<FOWUnit> _units = new List<FOWUnit>();
+ 
 
         void Start()
         {
@@ -50,80 +29,53 @@ namespace FoW
 
         void Update()
         {
+
+
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+                //UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+                UnityEngine.SceneManagement.SceneManager.LoadScene(2);
                 return;
             }
 
-            // select unit
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                RaycastHit hit;
-                if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit))//, unitLayer))
-                {
-                    FogOfWarUnit unit = hit.collider.GetComponent<FogOfWarUnit>();
-                    if (unit != null)
-                    {
-                        int index = _units.FindIndex(((u) => u.unit == unit));
-                        if (index != -1)
-                        {
-                            _units.Add(_units[index]);
-                            _units.RemoveAt(index);
-                        }
-                        else
-                            _units.Add(new FOWUnit(unit));
-                    }
-                }
-            }
-
-            // move unit
-            if (_units.Count > 0 && (Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Mouse2)))
-            {
-                RaycastHit[] hits = Physics.RaycastAll(_camera.ScreenPointToRay(Input.mousePosition));
-                if (hits.Length > 0)
-                {
-                    Vector3 p = hits[hits.Length - 1].point;
-                    p.y = 1.0f;
-                    _units[_units.Count - 1].destination = p;
-                }
-            }
-
-            // update units
-            float moveamount = unitMoveSpeed * Time.deltaTime;
-            for (int i = 0; i < _units.Count; ++i)
-            {
-                FOWUnit u = _units[i];
-                Vector3 direction = u.destination - u.position;
-                direction.y = 0.0f;
-                if (direction.sqrMagnitude < moveamount * moveamount)
-                    u.position = new Vector3(u.destination.x, u.position.y, u.destination.z);
-                else
-                {
-                    u.position += direction.normalized * moveamount;
-                    u.transform.rotation = Quaternion.Slerp(u.transform.rotation, Quaternion.LookRotation(direction, Vector3.up), moveamount);
-                }
-            }
-
-            // update highlight
-            if (_units.Count > 0)
-            {
-                highlight.position = new Vector3(_units[_units.Count - 1].position.x, 0.1f, _units[_units.Count - 1].position.z);
-                highlight.gameObject.SetActive(true);
-            }
-
+  
             // update camera
-            _cameraTransform.position += new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * (Time.deltaTime * cameraSpeed);
+            _cameraTransform.position += new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * cameraSpeed;
             
             if (Input.touchCount == 1)
             {
                 Vector2 delta = Input.GetTouch(0).deltaPosition;
-                _cameraTransform.position += new Vector3(-delta.x, 0, -delta.y);
+                
+                if (Input.mousePosition.y > 230)
+                {
+                    _cameraTransform.position += new Vector3(-delta.x * Time.deltaTime * cameraSpeed, 0, -delta.y * Time.deltaTime * cameraSpeed);
+                }
+
+                
+            }
+
+            if (Input.touchCount == 2)
+            {
+                Touch touchZero = Input.GetTouch(0);
+                Touch touchOne = Input.GetTouch(1);
+
+                Vector2 zero_touch = touchZero.position - touchZero.deltaPosition;
+                Vector2 one_touch = touchOne.position - touchOne.deltaPosition;
+
+                float prev_touch_delta_mag = (zero_touch - one_touch).magnitude;
+                float touch_delta_mag = (touchZero.position - touchOne.position).magnitude;
+
+                float delta_magitudediff = -(prev_touch_delta_mag - touch_delta_mag);
+
+
+                _cameraTransform.position = new Vector3(_cameraTransform.position.x, Mathf.Clamp(_cameraTransform.position.y - delta_magitudediff * Time.deltaTime * cameraSpeed, 15, 30), _cameraTransform.position.z);
+
             }
 
             // update camera zooming
-            float zoomchange = Input.GetAxis("Mouse ScrollWheel");
-            _cameraTransform.position = new Vector3(_cameraTransform.position.x, Mathf.Clamp(_cameraTransform.position.y - zoomchange * 10, 15, 30), _cameraTransform.position.z);
+            //float zoomchange = Input.GetAxis("Mouse ScrollWheel");
+           
         }
 
         void DrawOnMap(string text, Vector3 position, int panelwidth)
@@ -173,44 +125,8 @@ namespace FoW
           //  GUI.Box(new Rect(0, 0, panelwidth, Screen.height), "", _panelStyle);
             GUILayout.BeginArea(new Rect(10, 10, panelwidth - 20, Screen.height - panelwidth - 20));
 
-            if (!minimal)
-            {
-             //   GUILayout.Label("Fog Edge Radius:");
-               // _fog.fogEdgeRadius = GUILayout.HorizontalSlider(_fog.fogEdgeRadius, 0.0f, 1.0f);
 
-              //  GUILayout.Label("Partial Fog Amount:");
-             //   _fog.partialFogAmount = GUILayout.HorizontalSlider(_fog.partialFogAmount, 0.0f, 1.0f);
-
-            //    if (GUILayout.Button("FilterMode: " + _fog.filterMode.ToString()))
-             //       _fog.filterMode = (FilterMode)((int)(_fog.filterMode + 1) % System.Enum.GetValues(typeof(FilterMode)).Length);
-
-              //  GUILayout.Label("Fog Color:");
-              //  _fog.fogColor.r = GUILayout.HorizontalSlider(_fog.fogColor.r, 0.0f, 1.0f);
-              //  _fog.fogColor.g = GUILayout.HorizontalSlider(_fog.fogColor.g, 0.0f, 1.0f);
-              //  _fog.fogColor.b = GUILayout.HorizontalSlider(_fog.fogColor.b, 0.0f, 1.0f);
-            }
-
-           // if (GUILayout.Button("Reset Fog"))
-           //     _fog.SetAll(255);
-
-            if (_units.Count > 0)
-            {
-               // GUILayout.Label("Selected Unit Vision Radius:");
-               // _units[_units.Count - 1].unit.radius = GUILayout.HorizontalSlider(_units[_units.Count - 1].unit.radius, 3.0f, 20.0f);
-            }
-
-            if (!minimal)
-            {
-             //   GUILayout.Label("\n-- Controls --");
-             //   GUILayout.Label("Move Camera:\tWASD/Arrow Keys");
-             //   GUILayout.Label("Select Unit:\tLeft Mouse Button");
-             //   GUILayout.Label("Move Unit:\t\tMiddle/Right Mouse Button");
-            }
-
-           // GUILayout.Label("\n-- Stats --");
-            //GUILayout.Label("Explored :\t" + Mathf.RoundToInt(_fog.ExploredArea() * 100) + "%");
-            //GUILayout.Label("Visible Enemies:\t" + _visibleEnemies);
-
+      
             GUILayout.EndArea();
 
             // draw map
@@ -228,8 +144,11 @@ namespace FoW
 
 			for (int i = 0; i < _unit_list.Count; ++i) 
 			{
-				if(_unit_list[i].GetComponent<UnitStaus>()._is_enemy ==true)
-					DrawOnMap ("E", _unit_list[i].transform.position, panelwidth);
+                if (_unit_list[i].GetComponent<UnitStaus>()._is_enemy == true)
+                {
+                    if(FogOfWar.current.IsInFog(_unit_list[i].transform.position, 0.2f))
+                        DrawOnMap("E", _unit_list[i].transform.position, panelwidth);
+                }
 			}
 
 

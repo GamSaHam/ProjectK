@@ -59,6 +59,7 @@ public class MapManager : MonoBehaviour {
 
     public void setBuildable(int x,int y,bool is_able)
     {
+        
         GameObject map = _maps[x, y];
 
         if (map)
@@ -70,7 +71,7 @@ public class MapManager : MonoBehaviour {
         }
     }
 
-    bool _is_open = false;
+    public bool _is_open = false;
 	public void toogleMapsState()
 	{
         _is_open = !_is_open;

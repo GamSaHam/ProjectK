@@ -34,16 +34,6 @@ public class UnitStaus : MonoBehaviour {
 
 	public bool _is_target_enemy = true;
 
-	public void readDictionary(Dictionary<string, object> dic,string key,ref float ref_value)
-	{
-		if (dic [key] is int) {
-			int temp_speed = (int)dic [key];
-			ref_value = (float)temp_speed;
-		} else 
-		{
-			ref_value = (float)dic [key];
-		}
-	}
 
 	void Start()
 	{
@@ -56,16 +46,16 @@ public class UnitStaus : MonoBehaviour {
 
 			if (_id == id) 
 			{
-				readDictionary (dic, "radius",ref _radius);
-				readDictionary (dic, "speed",ref _speed);
-				readDictionary (dic, "attack_erea",ref _attack_erea);
+				Table.readDictionary (dic, "radius",ref _radius);
+                Table.readDictionary (dic, "speed",ref _speed);
+                Table.readDictionary (dic, "attack_erea",ref _attack_erea);
 				_attack_type = (string)dic["attack_type"];
-				readDictionary (dic, "attack_damage",ref _attack_damage);
-				readDictionary (dic, "hp",ref _hp);
-				readDictionary (dic, "search_erea",ref _search_erea);
+                Table.readDictionary (dic, "attack_damage",ref _attack_damage);
+                Table.readDictionary (dic, "hp",ref _hp);
+                Table.readDictionary (dic, "search_erea",ref _search_erea);
 
 				float attack_type2 = 0;
-				readDictionary (dic, "attack_type2",ref attack_type2);
+                Table.readDictionary (dic, "attack_type2",ref attack_type2);
 
 				if ((int)attack_type2 == 1)
 					_attack_type2 = ATTACK_TYPE2.GROUND;
@@ -75,7 +65,7 @@ public class UnitStaus : MonoBehaviour {
 					_attack_type2 = ATTACK_TYPE2.AIR;
 
 				float is_air = 0;
-				readDictionary (dic, "is_air",ref is_air);
+                Table.readDictionary (dic, "is_air",ref is_air);
 				if ((int)is_air == 0) 
 				{
 					_is_air = false;
@@ -85,7 +75,7 @@ public class UnitStaus : MonoBehaviour {
 				}
 
 				float skill_target = 0;
-				readDictionary (dic, "skill_target",ref skill_target);
+                Table.readDictionary (dic, "skill_target",ref skill_target);
 
 				if ((int)skill_target == 0) 
 				{

@@ -1,0 +1,5 @@
+id,name,limited_time,up_rate
+1001,speed,10,0.2
+1002,slow,0.5,0.2
+1003,poison,10,2
+1004,electric,0.2,1

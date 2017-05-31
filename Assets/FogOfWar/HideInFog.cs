@@ -12,6 +12,8 @@ namespace FoW
         Transform _transform;
         Renderer _renderer;
 
+        
+
         void Start()
         {
             _transform = transform;

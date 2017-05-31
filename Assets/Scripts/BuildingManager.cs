@@ -38,11 +38,11 @@ public class BuildingManager : MonoBehaviour
         public GameObject _building;
 		public int X{ get; set;}
 		public int Y{ get; set;}
-        public ConstructionManager.BUILD_TYPE _type;
+        public BUILD_TYPE _type;
 
 
 
-        public BuildingState(GameObject building,int x,int y, ConstructionManager.BUILD_TYPE type)
+        public BuildingState(GameObject building,int x,int y, BUILD_TYPE type)
         {
             _building = building;
             X = x;
@@ -66,24 +66,24 @@ public class BuildingManager : MonoBehaviour
  
     }
 
-    static public float getRadius(ConstructionManager.BUILD_TYPE build_type)
+    static public float getRadius(BUILD_TYPE build_type)
     {
 
-        if (build_type == ConstructionManager.BUILD_TYPE.NINE_BLOCK)
+        if (build_type == BUILD_TYPE.FOUR_BLOCK)
         {
-            return 3f;
+            return 4.5f;
         }
 
-        return 2f;
+        return 4.5f;
 
     }
 
 
-    public void insertBuilding(GameObject game_object,int x,int y,ConstructionManager.BUILD_TYPE build_type)
+    public void insertBuilding(GameObject game_object,int x,int y,BUILD_TYPE build_type)
     {
         setMapBuildable(x,y);
 
-        if (build_type == ConstructionManager.BUILD_TYPE.FOUR_BLOCK)
+        if (build_type == BUILD_TYPE.FOUR_BLOCK)
         {
 
             setMapBuildable(x+1,y);
@@ -92,7 +92,7 @@ public class BuildingManager : MonoBehaviour
 
         }
 
-		if (build_type == ConstructionManager.BUILD_TYPE.NINE_BLOCK)
+		if (build_type == BUILD_TYPE.NINE_BLOCK)
 		{
             setMapBuildable(x+1,y);
             setMapBuildable(x,y+1);
@@ -119,13 +119,13 @@ public class BuildingManager : MonoBehaviour
 		int end_x = 0;
 		int end_y = 0;
 
-		if (build_state._type == ConstructionManager.BUILD_TYPE.NINE_BLOCK) {
+		if (build_state._type == BUILD_TYPE.NINE_BLOCK) {
 			end_x = start_x + 5;
 			end_y = start_y + 5;
 		
 		}
 
-		if (build_state._type == ConstructionManager.BUILD_TYPE.FOUR_BLOCK) {
+		if (build_state._type == BUILD_TYPE.FOUR_BLOCK) {
 		
 		
 		}
@@ -170,7 +170,7 @@ public class BuildingManager : MonoBehaviour
 
 		BuildingState building = getBuildingStateByPoint (p);
 
-		if (building._type == ConstructionManager.BUILD_TYPE.NINE_BLOCK) 
+		if (building._type == BUILD_TYPE.NINE_BLOCK) 
 		{
 			for (int i = 0; i < 3; i++) 
 			{
@@ -196,10 +196,10 @@ public class BuildingManager : MonoBehaviour
             {
                 int x = _building_list[i].X;
                 int y = _building_list[i].Y;
-                ConstructionManager.BUILD_TYPE build_type = _building_list[i]._type;
+                BUILD_TYPE build_type = _building_list[i]._type;
                 setMapBuildable(x, y,true);
 
-                if (build_type == ConstructionManager.BUILD_TYPE.FOUR_BLOCK)
+                if (build_type == BUILD_TYPE.FOUR_BLOCK)
                 {
 
                     setMapBuildable(x + 1, y, true);
@@ -208,7 +208,7 @@ public class BuildingManager : MonoBehaviour
 
                 }
 
-                if (build_type == ConstructionManager.BUILD_TYPE.NINE_BLOCK)
+                if (build_type == BUILD_TYPE.NINE_BLOCK)
                 {
                     setMapBuildable(x + 1, y, true);
                     setMapBuildable(x, y + 1, true);

@@ -10,12 +10,15 @@ public class Node : MonoBehaviour
 	public bool _is_open = false;
 
 	MeshRenderer _mesh_renderer;
+    public Construction _construction;
+
     void Awake()
     {
         _fog = GameObject.Find("Main Camera").GetComponent<FogOfWar>();
         _material = GetComponent<MeshRenderer>().materials[0];
         _material.color = Color.green;
 		_mesh_renderer = GetComponent<MeshRenderer> ();
+        _construction = GameObject.Find("Player1").GetComponent<Construction>();
 
         if (_is_builable == false)
         {
@@ -63,8 +66,8 @@ public class Node : MonoBehaviour
         }
 
 
-        
-        ConstructionManager._instance.commandBuild(transform.position.x, transform.position.y, transform.position.z,gameObject.name,false);
+
+        _construction.commandBuild(transform.position.x, transform.position.y, transform.position.z,gameObject.name,false);
 
       
        
@@ -104,10 +107,10 @@ public class Node : MonoBehaviour
 			return;
 		}
 
-        GameObject _target_to_build = ConstructionManager._instance.getTargetBuilding();
-        ConstructionManager.BUILD_TYPE building_type = ConstructionManager._instance.getBuildingType();
+        GameObject _target_to_build = _construction.getTargetBuilding();
+        BUILD_TYPE building_type = _construction.getBuildingType();
 
-        if (building_type == ConstructionManager.BUILD_TYPE.FOUR_BLOCK)
+        if (building_type == BUILD_TYPE.FOUR_BLOCK)
         {
             string object_name = gameObject.name;
 
@@ -120,7 +123,7 @@ public class Node : MonoBehaviour
             changeMapColor(map_position, 1, 1, true);
         }
 
-		if (building_type == ConstructionManager.BUILD_TYPE.NINE_BLOCK)
+		if (building_type == BUILD_TYPE.NINE_BLOCK)
 		{
 			string object_name = gameObject.name;
 
@@ -149,10 +152,10 @@ public class Node : MonoBehaviour
 		if (!_is_open)
 			return;
 
-        GameObject _target_to_build = ConstructionManager._instance.getTargetBuilding();
-        ConstructionManager.BUILD_TYPE building_type = ConstructionManager._instance.getBuildingType();
+        GameObject _target_to_build = _construction.getTargetBuilding();
+        BUILD_TYPE building_type = _construction.getBuildingType();
 
-        if (building_type == ConstructionManager.BUILD_TYPE.FOUR_BLOCK)
+        if (building_type == BUILD_TYPE.FOUR_BLOCK)
         {
             string object_name = gameObject.name;
             string[] map_position = object_name.Split('p');
@@ -162,7 +165,7 @@ public class Node : MonoBehaviour
             changeMapColor(map_position, 1, 1, false);
         }
 
-		if (building_type == ConstructionManager.BUILD_TYPE.NINE_BLOCK)
+		if (building_type == BUILD_TYPE.NINE_BLOCK)
 		{
 			string object_name = gameObject.name;
 			string[] map_position = object_name.Split('p');
